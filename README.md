@@ -45,12 +45,13 @@ In the first phase of the analysis, we explore the dataset to understand the key
   - Analysis of churn based on **payment method** (e.g., Credit Card, Bank Transfer).
 - **Contract Type Breakdown 📅:** 
   - Churn comparison based on **contract types**: Monthly, Annual, and Two-Year.
-- **Feature Correlation 🔗:**
-  - Identifying correlations between different features (e.g., the relationship between 'Total Charges' and 'Num Tech Tickets').
 
 ### **Phase 2: Churn Prediction Model 🤖**
 
-In the second phase, a churn prediction model is built to predict customer churn. The following models were evaluated:
+In the second phase, a churn prediction model is built to predict customer churn. Before model training, feature selection was performed, which included **data encoding**, **data standardization**, and **feature engineering** to optimize model performance.
+
+The following models were evaluated:
+
 - **Logistic Regression** 📉
 - **Decision Tree** 🌳
 - **Random Forest** 🌲
@@ -61,26 +62,68 @@ For each model, we assess:
 - **Model Performance 📊:** Accuracy, precision, recall, F1-score, etc.
 - **Feature Importance 🔑:** Identifying which features are the most significant in predicting customer churn.
 
+To ensure robustness, **cross-validation** was conducted across all models to compare their performance and identify the one that provides the most efficient and accurate predictions.
+
 ---
 
 ## **Key Insights 💡**
 
-- **Churn Rate Patterns:** A higher number of **technical support tickets** correlate with a higher probability of churn.
-- **Customer Segments:** Senior citizens tend to churn over time, and individuals without a partner or dependents are more prone to churn.
-- **Customer Tenure:** Customers with a shorter tenure, particularly those in the first 16 months, are more susceptible to churning.
-- **Service Usage:** Customers who use  **Fiber Optic Internet services** are more likely to churn compared to those who use other services.
-- **Contract Type Impact:** Customers with **monthly contracts** show a higher frequency of churn compared to those with longer-term contracts (annual or two-year contracts).
-- **Billing Method:** Customers using **paperless billing** methods tend to have a higher churn rate than those on traditional billing.
-- **Payment Method:** Customers who pay via **Electronic Check** exhibit a noticeably higher churn rate compared to those using other payment methods.
+### Churn Rate Overview
+- The overall churn rate accounts for 26.6% of the total customer base.
+- Churn is especially high during the first 15 months of tenure, with the first month alone accounting for 5.40% of all churned customers.
+
+### Customer Demographics 👤
+- Younger customers are more likely to churn—three times more than senior citizens.
+- Gender shows no significant influence on churn, with nearly equal churn rates between male and female customers.
+- Customers without partners or dependents show a higher tendency to churn.
+
+### Service & Usage Behavior 📡
+- Customers using Fiber Optic Internet are more prone to churn (18.44% of churned users).
+- A significant portion (24.16%) of churned users had phone services.
+- The presence or absence of TV services does not significantly affect churn.
+
+### Billing & Payment Behavior 💳
+- A large number of churned customers used paperless billing—1,400 churned users preferred this method.
+- 1,071 churned customers selected Electronic Check as their primary payment method, showing a strong correlation with higher churn rates.
+-Customers with higher monthly charges also demonstrate a greater tendency to leave the service.
+
+### Customer Support Interactions 🛠
+- Customers who submitted a higher number of technical support tickets are noticeably more likely to churn.
+
+### Contract Types 📄
+- Most churned customers were on month-to-month contracts.
+- The likelihood of churn decreases as contract length increases (e.g., one-year or two-year contracts offer more stability).
 
 ---
 
-## **Model Results 🧠**
+## **Model Results & Evaluation 📈**
+Four machine learning models were evaluated to predict customer churn:
 
-- **Logistic Regression:** Showed strong accuracy and generalizability with feature importance clearly indicating key risk factors. 
-- **Decision Tree:** Offered good interpretability and insights but had potential overfitting issues.
-- **Random Forest:** Performed well but had lower recall when identifying churn customers.
-- **Support Vector Machine:** High precision but less intuitive in terms of feature interpretation compared to Random Forest.
+
+| Model                       | Accuracy | Precision (Churn) | Recall (Churn) | F1-Score (Churn) |
+|----------------------------|----------|-------------------|----------------|------------------|
+| **Logistic Regression** 📉 | 0.85     | 0.73              | 0.67           | 0.70             |
+| **Decision Tree** 🌳       | 0.81     | 0.63              | 0.67           | 0.65             |
+| **Random Forest** 🌲       | 0.85     | 0.73              | 0.67           | 0.70             |
+| **SVM** 🔲                 | 0.84     | 0.73              | 0.66           | 0.69             |
+
+
+### ✅ Best Performing Model: Logistic Regression
+Among the evaluated models, Logistic Regression demonstrated the highest overall accuracy (85%) and predicted the highest number of actual churned customers correctly. It maintained strong performance metrics across all evaluation points and proved to be a reliable baseline classifier.
+
+However, several important **limitations** must be considered before deploying this model in a business setting:
+
+**⚠️ Low Recall for Churned Customers (67%)**
+
+While precision is relatively high, the recall rate indicates that one-third of actual churn cases may go undetected. This could result in missed opportunities for retention interventions, potentially leading to substantial revenue loss.
+
+**⚠️ False Positives: Misclassifying Loyal Customers**
+
+The model incorrectly labels 141 loyal customers as churn risks. In a real-world application, this could lead to misallocated retention efforts, where incentives or resources are directed at customers who weren’t actually at risk of leaving.
+
+**⚠️ Linear Model Constraints**
+
+Logistic Regression assumes linear relationships between variables and outcomes. This may cause it to miss complex or non-linear patterns in customer behavior, limiting its predictive power in dynamic environments.
 
 ---
 
